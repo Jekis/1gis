@@ -1,0 +1,6 @@
+{
+    "name": "1gis",
+    "require": {
+        "silex/silex": "~1.3"
+    }
+}
