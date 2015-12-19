@@ -3,3 +3,6 @@
 
 # Composer
 vendor
+
+# Environment configuration
+app/config/parameters.yml

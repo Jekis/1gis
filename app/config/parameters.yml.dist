@@ -1,0 +1,3 @@
+parameters:
+    db_name: my_db
+    db_password: ~
