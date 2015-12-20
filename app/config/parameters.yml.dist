@@ -1,6 +1,6 @@
 parameters:
     db_host: localhost
     db_port: 27017
-    db_name: dbname
+    db_name: 1gis
     db_user: ~
     db_password: ~
