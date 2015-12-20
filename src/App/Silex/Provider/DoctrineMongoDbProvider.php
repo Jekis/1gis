@@ -45,6 +45,14 @@ class DoctrineMongoDbProvider implements ServiceProviderInterface
 
             foreach ($tmp as $name => &$options) {
                 $options = array_replace_recursive($app['mongodb.default_options'], $options);
+
+                // Unset null options
+                foreach ($options['options'] as $k => $value) {
+                    if (null === $value) {
+                        unset($options['options'][$k]);
+                    }
+                }
+
                 if (!isset($app['mongodbs.default'])) {
                     $app['mongodbs.default'] = $name;
                 }

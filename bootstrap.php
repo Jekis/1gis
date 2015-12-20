@@ -8,27 +8,30 @@ error_reporting(-1);
 
 require_once __DIR__.'/vendor/autoload.php';
 
-// Initialize Application
-$app = new Silex\Application();
 
 // Default config.
 $config = array(
     'debug' => true,
 );
 
-// Register providers,
+// Initialize Application
+$app = new Silex\Application($config);
+
+
+/*
+ * Register providers
+ */
+
 $app->register(new Igorw\Silex\ConfigServiceProvider(__DIR__.'/app/config/parameters.yml'));
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
-
-// TODO: Read options from parameters.
 $app->register(new DoctrineMongoDbProvider(), array(
     'mongodb.options' => array(
-        'server' => 'mongodb://127.0.0.1:27017',
-//        'options' => array(
-//            'username' => 'admin',
-//            'password' => 'admin',
-//            'db' => '1gis',
-//        ),
+        'server' => "mongodb://{$app['parameters']['db_host']}:{$app['parameters']['db_port']}",
+        'options' => array(
+            'username' => $app['parameters']['db_user'],
+            'password' => $app['parameters']['db_password'],
+            'db' => $app['parameters']['db_name'],
+        ),
     ),
 ));
 

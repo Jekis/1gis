@@ -16,6 +16,14 @@ trait ApiControllerTrait
     abstract protected function getApp();
 
     /**
+     * @return array
+     */
+    protected function getParameters()
+    {
+        return $this->getApp()['parameters'];
+    }
+
+    /**
      * @param string $collection
      * @return Builder
      */
@@ -31,9 +39,9 @@ trait ApiControllerTrait
     protected function selectCollection($collection)
     {
         $app = $this->getApp();
+        $parameters = $this->getParameters();
 
-        // TODO: Get DB name from parameters
-        return $app['mongodb']->selectCollection('1gis', $collection);
+        return $app['mongodb']->selectCollection($parameters['db_name'], $collection);
     }
 
     /**
