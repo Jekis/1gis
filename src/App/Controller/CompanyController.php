@@ -51,7 +51,11 @@ class CompanyController
         $limit = min($request->get('limit', $maxLimit), $maxLimit); // Limit cannot be higher than max limit
         $offset = $request->get('offset', 0);
 
-        // Filters
+        /**
+         * Filters
+         */
+
+        // Geo
         $lng = (float)$request->get('lng');
         $lat = (float)$request->get('lat');
         $radius = (float)$request->get('radius'); // km
@@ -72,6 +76,32 @@ class CompanyController
              */
             $radiusRad = $radius / 6378.1;
             $qb->field('building.loc')->geoWithinCenterSphere($lng, $lat, $radiusRad);
+        }
+
+        // Search by category
+
+        /**
+         * cat1: matches "cat0/cat1", "cat0/cat1/*"
+         * cat1/cat2: matches "cat1/cat2", "cat1/cat2/*"
+         * /cat1: matches "cat1", "cat1/*", but not "cat0/cat1"
+         */
+        $category = $request->get('category');
+
+        if (is_scalar($category)) {
+            $pathIsFromRoot = preg_match('~^\/~', $category); // Check if starts from slash "/"
+            $category = rtrim($category, '/');
+
+            if (!preg_match('~^[\w_\/]+$~', $category)) {
+                // Not valid category path. Force to find 0 companies
+                $category = '/_invalid_category_';
+            }
+
+            $pathRegexStr = str_replace('/', '\/', $category);
+            if ($pathIsFromRoot) {
+                $pathRegexStr = '^'. $pathRegexStr;
+            }
+
+            $qb->field('categories')->in(array(new \MongoRegex('/'. $pathRegexStr. '/i')));
         }
 
         $cursor = $qb->getQuery()->execute();
