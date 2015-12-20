@@ -48,19 +48,33 @@ class CompanyController
     {
         $maxLimit = 50;
 
-        // Limit cannot be higher than max limit
-        $limit = min($request->get('limit', $maxLimit), $maxLimit);
+        // Slicing
+        $limit = min($request->get('limit', $maxLimit), $maxLimit); // Limit cannot be higher than max limit
         $offset = $request->get('offset', 0);
 
+        // Filters
+        $lng = (float)$request->get('lng');
+        $lat = (float)$request->get('lat');
+        $radius = (float)$request->get('radius'); // km
 
         // Get building companies
         /** @var Cursor $cursor */
-        $cursor = $this->createQueryBuilder('companies')
+        $qb = $this->createQueryBuilder('companies')
             ->limit($limit)
             ->skip($offset)
-            ->getQuery()->execute()
         ;
 
+        // Search within circle
+        if (isset($lng, $lat, $radius)) {
+            /**
+             * Convert km to radians
+             * @see https://docs.mongodb.org/v3.2/tutorial/calculate-distances-using-spherical-geometry-with-2d-geospatial-indexes/
+             */
+            $radiusRad = $radius / 6378.1;
+            $qb->field('building.loc')->geoWithinCenterSphere($lng, $lat, $radiusRad);
+        }
+
+        $cursor = $qb->getQuery()->execute();
         $companies = $cursor->toArray();
 
         return $this->collectionResponse(
