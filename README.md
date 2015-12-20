@@ -61,5 +61,5 @@ API для получения инфомрации о компаниях. http:/
     
 ## API
 
-* [Струкута БД](src/App/Resources/doc/schema.md)
+* [Структура БД](src/App/Resources/doc/schema.md)
 * [Документация](src/App/Resources/doc/api.md)
