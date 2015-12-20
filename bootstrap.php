@@ -43,5 +43,11 @@ $app['app.building_controller'] = $app->share(
     }
 );
 
+$app['app.company_controller'] = $app->share(
+    function () use ($app) {
+        return new Gis1\App\Controller\CompanyController($app);
+    }
+);
+
 // Map routes to controllers
 include __DIR__.'/app/config/routing.php';

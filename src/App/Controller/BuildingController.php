@@ -36,4 +36,12 @@ class BuildingController
 
         return $this->apiResponse($data);
     }
+
+    /**
+     * @return Application
+     */
+    protected function getApp()
+    {
+        return $this->app;
+    }
 }

@@ -21,6 +21,10 @@ $app->error(function (\Exception $e, $code) {
         $error['code'] = $code;
     }
 
+    if ($code === 404) {
+        $error['message'] = 'Not found';
+    }
+
     return new JsonResponse(array('error' => $error), $status);
 });
 
