@@ -116,6 +116,12 @@ class CompanyController
             $qb->field('categories')->in(array(new \MongoRegex('/'. $pathRegexStr. '/i')));
         }
 
+        // Search by name
+        $name = $request->get('name');
+        if (!empty($name) && strlen($name) > 2) {
+            $qb->field('name')->type('regex')->equals(new \MongoRegex('/'. $name .'/i'));
+        }
+
         $cursor = $qb->getQuery()->execute();
         $companies = $cursor->toArray();
 
