@@ -5,3 +5,4 @@ $app
     ->get('/api/v1/buildings/{buildingId}/companies', 'app.company_controller:getBuildingCompaniesAction')
     ->assert('buildingId', '[a-z0-9]{24}')
 ;
+$app->get('/api/v1/companies', 'app.company_controller:getCompaniesAction');

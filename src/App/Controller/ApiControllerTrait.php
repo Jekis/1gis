@@ -55,4 +55,14 @@ trait ApiControllerTrait
 
         return $response;
     }
+
+    protected function collectionResponse($total, $collection)
+    {
+        $data = array(
+            'total' => $total,
+            'items' => array_values($collection),
+        );
+
+        return $this->apiResponse($data);
+    }
 }

@@ -44,6 +44,31 @@ class CompanyController
         $this->app = $app;
     }
 
+    public function getCompaniesAction(Request $request)
+    {
+        $maxLimit = 50;
+
+        // Limit cannot be higher than max limit
+        $limit = min($request->get('limit', $maxLimit), $maxLimit);
+        $offset = $request->get('offset', 0);
+
+
+        // Get building companies
+        /** @var Cursor $cursor */
+        $cursor = $this->createQueryBuilder('companies')
+            ->limit($limit)
+            ->skip($offset)
+            ->getQuery()->execute()
+        ;
+
+        $companies = $cursor->toArray();
+
+        return $this->collectionResponse(
+            $cursor->count(),
+            $this->prepareDataToResponse($companies)
+        );
+    }
+
     public function getBuildingCompaniesAction($buildingId, Request $request)
     {
         // Check building exists
@@ -62,15 +87,11 @@ class CompanyController
         ;
 
         $companies = $cursor->toArray();
-        $companiesTotal = $cursor->count();
-        $preparedCompanies = $this->prepareDataToResponse($companies);
 
-        $data = array(
-            'total' => $companiesTotal,
-            'items' => array_values($preparedCompanies)
+        return $this->collectionResponse(
+            $cursor->count(),
+            $this->prepareDataToResponse($companies)
         );
-
-        return $this->apiResponse($data);
     }
 
     /**
