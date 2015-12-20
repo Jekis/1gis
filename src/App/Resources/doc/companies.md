@@ -1,5 +1,11 @@
 # Компании
 
+## Получить компанию по ID 
+
+    GET /api/v1/companies/{id}
+
+[Пример ответа](json/company.json.md)
+
 ## Получить компании 
 
     GET /api/v1/companies

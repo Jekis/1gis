@@ -43,6 +43,18 @@ class CompanyController
         $this->app = $app;
     }
 
+    public function getCompanyAction($id)
+    {
+        // Check building exists
+        $company = $this->selectCollection('companies')->findOne(array('_id' => new MongoId($id)));
+
+        if ($company) {
+            return $this->apiResponse(static::rebuildCompanyData($company));
+        }
+
+        throw new NotFoundHttpException();
+    }
+
     public function getCompaniesAction(Request $request)
     {
         $maxLimit = 50;

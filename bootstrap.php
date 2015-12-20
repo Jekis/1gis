@@ -11,7 +11,7 @@ require_once __DIR__.'/vendor/autoload.php';
 
 // Default config.
 $config = array(
-    'debug' => true,
+    'debug' => false,
 );
 
 // Initialize Application
