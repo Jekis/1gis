@@ -30,9 +30,8 @@ class CompanyController
             unset($company['_id']);
         }
 
-        if (isset($company['building']['_id'])) {
-            $company['building']['id'] = (string)$company['building']['_id'];
-            unset($company['building']['_id']);
+        if (isset($company['building'])) {
+            $company['building'] = BuildingController::rebuildBuildingData($company['building']);
         }
 
         return $company;
@@ -65,7 +64,8 @@ class CompanyController
         ;
 
         // Search within circle
-        if (isset($lng, $lat, $radius)) {
+        $doGeoSearch = isset($lng, $lat, $radius) && ($lng > 0 || $lat > 0 || $radius > 0);
+        if ($doGeoSearch) {
             /**
              * Convert km to radians
              * @see https://docs.mongodb.org/v3.2/tutorial/calculate-distances-using-spherical-geometry-with-2d-geospatial-indexes/

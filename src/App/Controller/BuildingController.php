@@ -4,8 +4,8 @@ namespace Gis1\App\Controller;
 
 
 use Doctrine\MongoDB\Cursor;
-use Doctrine\MongoDB\Query\Builder;
 use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
 
 class BuildingController
 {
@@ -17,24 +17,61 @@ class BuildingController
     protected $app;
 
 
+    /**
+     * @param array $building
+     * @return array
+     */
+    public static function rebuildBuildingData(array $building)
+    {
+        if (isset($building['_id'])) {
+            $building['id'] = (string)$building['_id'];
+            unset($building['_id']);
+        }
+
+        return $building;
+    }
+
+
     public function __construct(Application $app)
     {
         $this->app = $app;
     }
 
-    public function getListAction()
+    public function getListAction(Request $request)
     {
-        /** @var Builder $qb */
-        $qb = $this->app['mongodb']
-            ->selectCollection('1gis', 'buildings')
-            ->createQueryBuilder()
+        $maxLimit = 50;
+
+        // Slicing
+        $limit = min($request->get('limit', $maxLimit), $maxLimit); // Limit cannot be higher than max limit
+        $offset = $request->get('offset', 0);
+
+        // Get building
+        /** @var Cursor $cursor */
+        $cursor = $this->createQueryBuilder('buildings')
+            ->limit($limit)
+            ->skip($offset)
+            ->getQuery()->execute()
         ;
 
-        /** @var Cursor $cursor */
-        $cursor = $qb->find()->limit(50)->getQuery()->execute();
-        $data = $cursor->toArray();
+        $buildings = $cursor->toArray();
 
-        return $this->apiResponse($data);
+        return $this->collectionResponse(
+            $cursor->count(),
+            $this->prepareDataToResponse($buildings)
+        );
+    }
+
+    /**
+     * @param array $buildings
+     * @return array
+     */
+    protected function prepareDataToResponse(array $buildings)
+    {
+        foreach ($buildings as $idx => $building) {
+            $buildings[$idx] = static::rebuildBuildingData($building);
+        }
+
+        return $buildings;
     }
 
     /**
