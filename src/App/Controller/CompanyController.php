@@ -89,7 +89,7 @@ class CompanyController
 
         if (is_scalar($category)) {
             $pathIsFromRoot = preg_match('~^\/~', $category); // Check if starts from slash "/"
-            $category = rtrim($category, '/');
+            $category = trim($category, '/');
 
             if (!preg_match('~^[\w_\/]+$~', $category)) {
                 // Not valid category path. Force to find 0 companies
