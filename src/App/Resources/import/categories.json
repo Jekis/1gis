@@ -1,0 +1,9 @@
+{"_id":{"$oid":"56765ddb751b886f33534552"},"name":"Еда","slug":"food"}
+{"_id":{"$oid":"56765e0b751b886f33534553"},"name":"Автомобили","slug":"cars"}
+{"_id":{"$oid":"56765e15751b886f33534554"},"name":"Спорт","slug":"sport"}
+{"_id":{"$oid":"56765f04751b886f33534555"},"name":"Полуфабрикаты оптом","slug":"prefabricated-in-wholesale","parent":{"$oid":"56765ddb751b886f33534552"},"ancestors":[{"_id":{"$oid":"56765ddb751b886f33534552"},"name":"Еда","slug":"food"}]}
+{"_id":{"$oid":"56765f14751b886f33534556"},"name":"Мясная продукция","slug":"meat-products","parent":{"$oid":"56765ddb751b886f33534552"},"ancestors":[{"_id":{"$oid":"56765ddb751b886f33534552"},"name":"Еда","slug":"food"}]}
+{"_id":{"$oid":"56765fbc751b886f33534557"},"name":"Грузовые","slug":"trucks","parent":{"$oid":"56765e0b751b886f33534553"},"ancestors":[{"_id":{"$oid":"56765e0b751b886f33534553"},"name":"Автомобили","slug":"cars"}]}
+{"_id":{"$oid":"56765fcb751b886f33534558"},"name":"Легковые","slug":"motorcars","parent":{"$oid":"56765e0b751b886f33534553"},"ancestors":[{"_id":{"$oid":"56765e0b751b886f33534553"},"name":"Автомобили","slug":"cars"}]}
+{"_id":{"$oid":"56766045751b886f33534559"},"name":"Запчасти для подвески","slug":"suspension-spare-parts","parent":{"$oid":"56765fcb751b886f33534558"},"ancestors":[{"_id":{"$oid":"56765e0b751b886f33534553"},"name":"Автомобили","slug":"cars"},{"_id":{"$oid":"56765fcb751b886f33534558"},"name":"Легковые","slug":"motorcars"}]}
+{"_id":{"$oid":"56766053751b886f3353455a"},"name":"Шины/Диски","slug":"tires","parent":{"$oid":"56765fcb751b886f33534558"},"ancestors":[{"_id":{"$oid":"56765e0b751b886f33534553"},"name":"Автомобили","slug":"cars"},{"_id":{"$oid":"56765fcb751b886f33534558"},"name":"Легковые","slug":"motorcars"}]}
