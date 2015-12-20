@@ -58,7 +58,11 @@ API для получения инфомрации о компаниях. http:/
 Создание базы данных из дампа. Будет создана база `1gis`
 
     mongorestore --gzip --archive=src/App/Resources/dump/1gis.gz --db 1gis
-    
+
+или создание пустой базы `1gis`
+
+    mongo localhost:27017 --eval "dbName='1gis'" bin/schema.js
+
 ## API
 
 * [Структура БД](src/App/Resources/doc/schema.md)
